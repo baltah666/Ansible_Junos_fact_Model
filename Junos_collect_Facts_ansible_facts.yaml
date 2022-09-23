@@ -1,0 +1,34 @@
+---
+- name: Get facts from Junos device
+  hosts:
+    - all
+  roles:
+   - Juniper.junos
+  connection: local
+  gather_facts: no
+
+  vars:
+    connection_settings:
+      host: "{{ ansible_host }}"
+      user: "{{ username }}"
+      passwd: "{{ password }}"
+      port: 22
+      timeout: 120
+
+  tasks:
+      - name: get device facts
+        juniper_junos_facts:
+          provider: "{{ connection_settings }}"
+#        register: test1
+
+      - name: show junos version
+        debug:
+          var: junos.version
+
+      - name: show device uptime
+        debug:
+          var: junos.RE0.up_time
+
+      - name: show device serial number
+        debug:
+          var: junos.serialnumber
